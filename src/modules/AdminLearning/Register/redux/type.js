@@ -1,0 +1,13 @@
+const sliceName = "register";
+
+const actions = {
+  SET_USER_NOT_REGISTER: `${sliceName}/SET_USER_NOT_REGISTER`,
+  SET_USER_REGISTERED: `${sliceName}/SET_USER_NOT_REGISTERED`,
+  SET_USER_APPROVE: `${sliceName}/SET_USER_APPROVE`,
+  CONFIRM_REGISTER_USER: `${sliceName}/CONFIRM_REGISTER_USER`,
+  SET_COURSE_NOT_REGISTER: `${sliceName}/SET_COURSE_NOT_REGISTER`,
+  SET_COURSE_APPROVED: `${sliceName}/SET_COURSE_APPROVED`,
+  SET_COURSE_WAIT_APPROVE: `${sliceName}/SET_COURSE_WAIT_APPROVE`,
+};
+
+export default actions;

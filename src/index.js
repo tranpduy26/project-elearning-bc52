@@ -1,12 +1,25 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import "bootstrap/dist/css/bootstrap.min.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { SnackbarProvider } from "notistack";
+import { Provider } from "react-redux";
+import store from "../src/modules/AdminLearning/Register/app/store";
+
+const queryClient = new QueryClient();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <QueryClientProvider client={queryClient}>
+        <SnackbarProvider>
+          <App />
+        </SnackbarProvider>
+      </QueryClientProvider>
+    </Provider>
   </React.StrictMode>
 );
 
