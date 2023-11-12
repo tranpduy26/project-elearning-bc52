@@ -11,6 +11,8 @@ import AddCourse from "./modules/AdminLearning/AdminCourses/AddCourse/AddCourse"
 import UpdateCourse from "./modules/AdminLearning/AdminCourses/UpdateCourse/UpdateCourse";
 import NotFound from "./components/NotFound/NotFound";
 import UserListRegister from "./modules/AdminLearning/Register/UserListRegister";
+import Home from "./modules/Home/Home";
+import CourseListRegister from "./modules/AdminLearning/Register/CourseListRegister";
 
 export default function App() {
   return (
@@ -18,7 +20,7 @@ export default function App() {
       <BrowserRouter>
         <Routes>
           {/* Home */}
-
+          <Route index element={<Home />} />
           {/* Admin */}
           <Route element={<AdminProtectedRoute />}>
             <Route path="/admin" element={<AdminLearning />}>
@@ -34,8 +36,11 @@ export default function App() {
               />
               <Route
                 path="/admin/register/user-list/:id"
-                exact
                 element={<UserListRegister />}
+              />
+              <Route
+                path="/admin/register/course-list/:id"
+                element={<CourseListRegister />}
               />
             </Route>
           </Route>

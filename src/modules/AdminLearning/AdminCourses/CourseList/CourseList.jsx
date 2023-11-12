@@ -22,7 +22,7 @@ import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { FilterOutlined } from "@ant-design/icons";
+import DownloadDoneIcon from "@mui/icons-material/DownloadDone";
 import IconButton from "@mui/material/IconButton";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
@@ -205,19 +205,22 @@ export default function CourseList() {
                       <IconButton
                         onClick={() => handleUpdateCourse(course.maKhoaHoc)}
                       >
-                        <EditIcon />
+                        <EditIcon style={{ color: "blue" }} />
                       </IconButton>
                       <IconButton
                         onClick={() => handleDeleteCourse(course.maKhoaHoc)}
                         aria-label="delete"
                       >
-                        <DeleteIcon />
+                        <DeleteIcon style={{ color: "red" }} />
                       </IconButton>
                       <NavLink
-                        to={`/admin/register/user-list/${course.taiKhoan}`}
-                        className="bg-black text-white ml-2 p-2 rounded"
+                        to={`/admin/register/user-list/${course.maKhoaHoc}`}
                       >
-                        <FilterOutlined />
+                        <DownloadDoneIcon
+                          style={{
+                            color: "black",
+                          }}
+                        />
                       </NavLink>
                     </TableCell>
                   </TableRow>

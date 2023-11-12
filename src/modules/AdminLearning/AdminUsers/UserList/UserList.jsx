@@ -22,7 +22,7 @@ import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { FilterOutlined } from "@ant-design/icons";
+import DownloadDoneIcon from "@mui/icons-material/DownloadDone";
 import IconButton from "@mui/material/IconButton";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
@@ -160,7 +160,6 @@ export default function UserList() {
       navigate("/admin/users-list");
     },
     onError: (error) => {
-      console.log(error);
       handleSnackbar("User update failed!", "error")();
     },
   });
@@ -264,19 +263,22 @@ export default function UserList() {
                       <IconButton
                         onClick={() => handleModalUpdate(user.taiKhoan)}
                       >
-                        <EditIcon />
+                        <EditIcon style={{ color: "blue" }} />
                       </IconButton>
                       <IconButton
                         onClick={() => handleDeleteUser(user.taiKhoan)}
                         aria-label="delete"
                       >
-                        <DeleteIcon />
+                        <DeleteIcon style={{ color: "red" }} />
                       </IconButton>
                       <NavLink
                         to={`/admin/register/course-list/${user.taiKhoan}`}
-                        className="bg-black text-white ml-2 p-2 rounded"
                       >
-                        <FilterOutlined />
+                        <DownloadDoneIcon
+                          style={{
+                            color: "black",
+                          }}
+                        />
                       </NavLink>
                     </TableCell>
                   </TableRow>
