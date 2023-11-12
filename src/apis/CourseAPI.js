@@ -18,7 +18,7 @@ export async function addCourse(course) {
   try {
     const response = await fetcher.post("/QuanLyKhoaHoc/ThemKhoaHoc", course);
     console.log(response);
-    return response.data;
+    return response.data?.content;
   } catch (error) {
     throw error.response.data;
   }

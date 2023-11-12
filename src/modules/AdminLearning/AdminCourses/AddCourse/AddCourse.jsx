@@ -81,7 +81,7 @@ export default function AddCourse() {
       formData.append("maNhom", "GP13");
       formData.append("ngayTao", values.ngayTao);
       formData.append("maDanhMucKhoaHoc", values.maDanhMucKhoaHoc);
-      formData.append("taiKhoanNguoiTao", currentUser.taiKhoan);
+      formData.append("taiKhoanNguoiTao", values.taiKhoan);
 
       return addCourse(formData);
     },
