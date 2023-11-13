@@ -9,7 +9,6 @@ import Grid from "@mui/material/Grid";
 import Stack from "@mui/material/Stack";
 import Alert from "@mui/material/Alert";
 import AlertTitle from "@mui/material/AlertTitle";
-import { Label } from "@mui/icons-material";
 
 export default function AddUser() {
   const queryClient = useQueryClient();
@@ -22,7 +21,6 @@ export default function AddUser() {
     register,
     handleSubmit,
     formState: { errors },
-    setValue,
     reset,
   } = useForm({
     defaultValues: {

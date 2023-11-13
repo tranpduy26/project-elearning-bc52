@@ -5,7 +5,7 @@ import { composeWithDevTools } from "redux-devtools-extension";
 // import userReducer from "features/User/redux/userSlice";
 // import courseListReducer from "features/Admin/Courses/redux/courseSlice";
 // import homeReducer from "features/Home/redux/homeSlice";
-import registerReducer from "../redux/registerSlice";
+import registerReducer from "../modules/AdminLearning/Register/redux/registerSlice";
 
 const reducer = combineReducers({
   // userListReducer: userListReducer,

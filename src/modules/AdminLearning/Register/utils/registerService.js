@@ -1,5 +1,5 @@
-import requester from "../app/api";
-import { apiPath } from "../app/apiPath";
+import requester from "../../../../apis/api";
+import { apiPath } from "../../../../apis/apiPath";
 
 export const getUserListNotRegister = async (maKhoaHoc) => {
   return await requester({

@@ -18,7 +18,6 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import SearchIcon from "@mui/icons-material/Search";
-import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -26,10 +25,9 @@ import DownloadDoneIcon from "@mui/icons-material/DownloadDone";
 import IconButton from "@mui/material/IconButton";
 import Modal from "@mui/material/Modal";
 import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { useSnackbar } from "notistack";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 
 export default function UserList() {
   // Snackbar
@@ -45,7 +43,6 @@ export default function UserList() {
   };
 
   // List of users
-  const [users, setUsers] = useState([]);
   const queryClient = useQueryClient();
 
   const {
@@ -73,6 +70,7 @@ export default function UserList() {
   };
 
   // Delete user
+  const { userId } = useParams();
   const { mutate: handleDeleteUser } = useMutation({
     mutationFn: (userId) => apiDeleteUser(userId),
     onSuccess: () => {
@@ -85,16 +83,15 @@ export default function UserList() {
   });
 
   // Update user
+  const [user, setUser] = useState({});
   const [openModal, setOpenModal] = useState(false);
 
-  const handleOpen = () => setOpenModal(true);
+  const handleOpen = (user) => {
+    setUser(user);
+    setOpenModal(true);
+  };
 
   const handleClose = () => setOpenModal(false);
-
-  const handleModalUpdate = (userId) => {
-    handleOpen();
-    handleUpdateUser(userId);
-  };
 
   const {
     register,
@@ -105,9 +102,8 @@ export default function UserList() {
   } = useForm({
     defaultValues: {
       taiKhoan: "",
-      matKhau: "",
       hoTen: "",
-      soDt: "",
+      soDT: "",
       maLoaiNguoiDung: "",
       maNhom: "GP13",
       email: "",
@@ -116,47 +112,32 @@ export default function UserList() {
   });
 
   const navigate = useNavigate();
-
-  const { userId } = useParams();
-
-  const { data: userDetail } = useQuery({
-    queryKey: ["user", userId],
-    queryFn: () => apiGetUserDetail(userId),
-  });
-  // chưa lấy được giá data từng user
-
   useEffect(() => {
-    console.log(userDetail);
-    // Đặt giá trị cho các trường từ dữ liệu phim đã có
-    if (userDetail) {
-      setValue("taiKhoan", userDetail.taiKhoan);
-      setValue("matKhau", userDetail.matKhau);
-      setValue("hoTen", userDetail.hoTen);
-      setValue("email", userDetail.email);
-      setValue("soDT", userDetail.soDt);
+    if (user) {
+      setValue("taiKhoan", user.taiKhoan);
+      setValue("hoTen", user.hoTen);
+      setValue("soDt", user.soDt);
+      setValue("maLoaiNguoiDung", user.maLoaiNguoiDung);
       setValue("maNhom", "GP13");
-      setValue("maLoaiNguoiDung", userDetail.maLoaiNguoiDung);
+      setValue("email", user.email);
     }
-  }, [userDetail]);
+  }, [user]);
 
   const { mutate: handleUpdateUser } = useMutation({
     mutationFn: (values) => {
       const formData = new FormData();
       formData.append("taiKhoan", values.taiKhoan);
-      formData.append("matKhau", values.matKhau);
       formData.append("hoTen", values.hoTen);
-      formData.append("soDt", values.soDt);
+      formData.append("soDT", values.soDT);
       formData.append("maLoaiNguoiDung", values.maLoaiNguoiDung);
       formData.append("maNhom", "GP13");
       formData.append("email", values.email);
 
       return apiUpdateUser(values);
     },
-    onSettled: () => {
-      queryClient.invalidateQueries(["user", userId]);
-    },
     onSuccess: () => {
       handleSnackbar("Updated user successfully!", "success")();
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
       navigate("/admin/users-list");
     },
     onError: (error) => {
@@ -225,12 +206,12 @@ export default function UserList() {
             <TableHead>
               <TableRow>
                 <TableCell>STT</TableCell>
-                <TableCell>Account</TableCell>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Phone</TableCell>
-                <TableCell style={{ textAlign: "center" }}>User Type</TableCell>
-                <TableCell>Action</TableCell>
+                <TableCell>ACCOUNT</TableCell>
+                <TableCell>NAME</TableCell>
+                <TableCell>EMAIL</TableCell>
+                <TableCell>PHONE</TableCell>
+                <TableCell style={{ textAlign: "center" }}>USER TYPE</TableCell>
+                <TableCell>ACTION</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -260,9 +241,7 @@ export default function UserList() {
                       {user.maLoaiNguoiDung}
                     </TableCell>
                     <TableCell>
-                      <IconButton
-                        onClick={() => handleModalUpdate(user.taiKhoan)}
-                      >
+                      <IconButton onClick={() => handleOpen(user)}>
                         <EditIcon style={{ color: "blue" }} />
                       </IconButton>
                       <IconButton
@@ -324,25 +303,6 @@ export default function UserList() {
               />
               {errors.taiKhoan && (
                 <p className="text-danger">{errors.taiKhoan.message}</p>
-              )}
-            </div>
-            <div className="mb-3">
-              <label className="form-label fw-bold">Password</label>
-              <input
-                placeholder="Password"
-                autoComplete="current-password"
-                className="form-control"
-                type="password"
-                {...register("matKhau", {
-                  required: {
-                    value: true,
-                    message: "Password cannot be empty",
-                  },
-                })}
-              />
-
-              {errors.matKhau && (
-                <p className="text-danger">{errors.matKhau.message}</p>
               )}
             </div>
             <div className="mb-3">
@@ -430,6 +390,12 @@ export default function UserList() {
             )}
             <button type="submit" className="btn btn-primary fw-bold py-2 mt-2">
               Update User
+            </button>
+            <button
+              onClick={handleClose}
+              className="btn btn-warning fw-bold py-2 mt-2 mx-2"
+            >
+              Back
             </button>
           </form>
         </Box>

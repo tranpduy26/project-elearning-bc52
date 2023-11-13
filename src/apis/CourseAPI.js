@@ -4,10 +4,9 @@ export async function getCourses() {
   try {
     const response = await fetcher.get("/QuanLyKhoaHoc/LayDanhSachKhoaHoc", {
       params: {
-        maNhom: "GP13",
+        maNhom: "GP01",
       },
     });
-    console.log(response);
     return response.data;
   } catch (error) {
     throw error.response.data.content;
@@ -17,10 +16,9 @@ export async function getCourses() {
 export async function addCourse(course) {
   try {
     const response = await fetcher.post("/QuanLyKhoaHoc/ThemKhoaHoc", course);
-    console.log(response);
     return response.data?.content;
   } catch (error) {
-    throw error.response.data;
+    throw error.response.data.content;
   }
 }
 
@@ -28,22 +26,22 @@ export async function deleteCourse(idCourse) {
   try {
     const response = await fetcher.delete("/QuanLyKhoaHoc/XoaKhoaHoc", {
       params: {
-        MaKhoaHoc: idCourse,
+        maKhoaHoc: idCourse,
       },
     });
-    return response.data;
+    return response.data?.content;
   } catch (error) {
     throw error.response.data.content;
   }
 }
 export async function updateCourse(dataCourse) {
   try {
-    const response = await fetcher.post(
+    const response = await fetcher.put(
       "/QuanLyKhoaHoc/CapNhatKhoaHoc",
       dataCourse
     );
 
-    return response.data;
+    return response.data?.content;
   } catch (error) {
     throw error.response.data.content;
   }
@@ -53,12 +51,38 @@ export async function getCourseDetails(courseId) {
   try {
     const response = await fetcher.get("/QuanLyKhoaHoc/LayThongTinKhoaHoc", {
       params: {
-        MaKhoaHoc: courseId,
+        maKhoaHoc: courseId,
       },
     });
     console.log(response);
     return response?.data;
   } catch (error) {
     throw error.response?.data?.content;
+  }
+}
+
+export async function getCategoryCourses() {
+  try {
+    const response = await fetcher.get("/QuanLyKhoaHoc/LayDanhMucKhoaHoc");
+    return response.data?.content;
+  } catch (error) {
+    throw error.response.data?.content;
+  }
+}
+
+export async function uploadImageCourses(idCourse, formData) {
+  try {
+    const response = await fetcher.post(
+      `/QuanLyKhoaHoc/UploadHinhAnhKhoaHoc/${idCourse}`,
+      formData,
+      {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      }
+    );
+    return response.data?.content;
+  } catch (error) {
+    throw error.response.data?.content;
   }
 }

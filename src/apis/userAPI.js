@@ -55,7 +55,7 @@ export const apiDeleteUser = async (userId) => {
   try {
     const response = await fetcher.delete("/QuanLyNguoiDung/XoaNguoiDung", {
       params: {
-        TaiKhoan: userId,
+        taiKhoan: userId,
       },
     });
     return response.data?.content;
@@ -65,13 +65,13 @@ export const apiDeleteUser = async (userId) => {
 };
 
 // apiUpdateUser
-export const apiUpdateUser = async () => {
+export const apiUpdateUser = async (payload) => {
   try {
     const response = await fetcher.put(
-      "/QuanLyNguoiDung/CapNhatThongTinNguoiDung"
+      "/QuanLyNguoiDung/CapNhatThongTinNguoiDung",
+      payload
     );
-    console.log(response);
-    return response.data;
+    return response.data?.content;
   } catch (error) {
     throw error.response.data?.content;
   }

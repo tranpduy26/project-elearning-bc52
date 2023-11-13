@@ -28,7 +28,6 @@ export default function AddCourse() {
 
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  // const { dataCourse } = useParams();
   const { messenge, setMessage } = useState("");
   const { currentUser } = useUserContext();
 
@@ -46,11 +45,11 @@ export default function AddCourse() {
       moTa: "",
       luotXem: 0,
       danhGia: 0,
-      hinhAnh: "",
-      maNhom: "GP13",
+      hinhAnh: null,
+      maNhom: "",
       ngayTao: "",
       maDanhMucKhoaHoc: "",
-      taiKhoanNguoiTao: "",
+      taiKhoanNguoiTao: currentUser?.taiKhoan,
     },
     mode: "onTouched",
   });
@@ -58,7 +57,6 @@ export default function AddCourse() {
   const hinhAnh = watch("hinhAnh");
   const [imgPreview, setingPreview] = useState("");
   useEffect(() => {
-    //Chạy vào useEffect callback khi giá tri hinhAnh bị thay đổi
     const file = hinhAnh?.[0];
     if (!file) return;
     const fileReader = new FileReader();
@@ -81,7 +79,7 @@ export default function AddCourse() {
       formData.append("maNhom", "GP13");
       formData.append("ngayTao", values.ngayTao);
       formData.append("maDanhMucKhoaHoc", values.maDanhMucKhoaHoc);
-      formData.append("taiKhoanNguoiTao", values.taiKhoan);
+      formData.append("taiKhoanNguoiTao", currentUser?.taiKhoan);
 
       return addCourse(formData);
     },
@@ -275,6 +273,7 @@ export default function AddCourse() {
                 <input
                   className="form-control w-50"
                   type="file"
+                  accept="image/png, image/jpeg, image/gif, image/jpg"
                   placeholder="Course images"
                   {...register("hinhAnh", {
                     required: {

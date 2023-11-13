@@ -93,12 +93,17 @@ export default function UpdateCourse() {
     console.log(course);
     if (course) {
       setingPreview(course.hinhAnh);
+      setValue("maKhoahoc", course.maKhoahoc);
+      setValue("biDanh", course.biDanh);
       setValue("tenKhoaHoc", course.tenKhoaHoc);
-      setValue("maDanhMucKhoaHoc", course.maDanhMucKhoaHoc);
+      setValue("moTa", course.moTa);
       setValue("luotXem", course.luotXem);
       setValue("danhGia", course.danhGia);
-      setValue("moTa", course.moTa);
       setValue("hinhAnh", course.hinhAnh);
+      setValue("maNhom", "GP13");
+      setValue("ngayTao", course.ngayTao);
+      setValue("maDanhMucKhoaHoc", course.danhMucKhoaHoc.maDanhMucKhoaHoc);
+      setValue("taiKhoanNguoiTao", course.taiKhoanNguoiTao);
     }
   }, [course]);
 
@@ -118,17 +123,24 @@ export default function UpdateCourse() {
   const { mutate: onUpdate } = useMutation({
     mutationFn: (values) => {
       const formData = new FormData();
+      formData.append("maKhoahoc", values.maKhoahoc);
+      formData.append("biDanh", values.biDanh);
       formData.append("tenKhoaHoc", values.tenKhoaHoc);
-      formData.append("maDanhMucKhoaHoc", values.maDanhMucKhoaHoc);
+      formData.append("moTa", values.moTa);
       formData.append("luotXem", values.luotXem);
       formData.append("danhGia", values.danhGia);
-      formData.append("moTa", values.moTa);
       if (values.hinhAnh[0]) {
         formData.append("hinhAnh", values.hinhAnh[0]);
       }
       formData.append("maNhom", "GP13");
+      formData.append("ngayTao", values.ngayTao);
+      formData.append(
+        "maDanhMucKhoaHoc",
+        values.danhMucKhoaHoc.maDanhMucKhoaHoc
+      );
+      formData.append("taiKhoanNguoiTao", values.taiKhoanNguoiTao);
 
-      return updateCourse(formData);
+      return updateCourse(values);
     },
     onSettled: () => {
       queryClient.invalidateQueries(["course", courseId]);
@@ -137,11 +149,16 @@ export default function UpdateCourse() {
     onSuccess: () => {
       handleSnackbar("Successfully updated the course!", "success")();
       navigate("/admin/courses-list");
+      queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
     onError: () => {
       handleSnackbar("Course update failed!", "error")();
     },
   });
+
+  const onSubmit = (values) => {
+    onUpdate(values);
+  };
 
   return (
     <div style={{ height: "100vh", overflowY: "scroll" }}>
@@ -158,7 +175,7 @@ export default function UpdateCourse() {
             </Grid>
             <Grid item xs={6}>
               <form
-                onSubmit={handleSubmit(onUpdate)}
+                onSubmit={handleSubmit(onSubmit)}
                 className="border border-primary rounded-4 px-5 py-5 border-3 bg-white text-dark"
               >
                 <div>

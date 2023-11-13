@@ -6,7 +6,7 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import { SnackbarProvider } from "notistack";
 import { Provider } from "react-redux";
-import store from "../src/modules/AdminLearning/Register/app/store";
+import store from "./apis/store";
 
 const queryClient = new QueryClient();
 

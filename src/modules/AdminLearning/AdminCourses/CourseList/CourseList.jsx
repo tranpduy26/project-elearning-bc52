@@ -1,13 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useMutation, useQueryClient, useQuery } from "@tanstack/react-query";
-import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { NavLink } from "react-router-dom";
-import {
-  getCourses,
-  deleteCourse,
-  updateCourse,
-} from "../../../../apis/CourseAPI";
+import { getCourses, deleteCourse } from "../../../../apis/CourseAPI";
 
 import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
@@ -18,16 +13,11 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import SearchIcon from "@mui/icons-material/Search";
-import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import DownloadDoneIcon from "@mui/icons-material/DownloadDone";
 import IconButton from "@mui/material/IconButton";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
-import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import { useSnackbar } from "notistack";
 
 export default function CourseList() {
@@ -44,7 +34,6 @@ export default function CourseList() {
   };
 
   // List of courses
-  const [users, setUsers] = useState([]);
   const queryClient = useQueryClient();
 
   const {
@@ -56,7 +45,6 @@ export default function CourseList() {
     queryFn: getCourses,
     refetchOnWindowFocus: false,
   });
-  console.log(listCourse);
 
   // Pagination
   const [currentPage, setCurentPage] = useState(0);
@@ -146,15 +134,15 @@ export default function CourseList() {
         <TableContainer sx={{ maxHeight: 1000 }}>
           <Table stickyHeader aria-label="sticky table">
             <TableHead>
-              <TableRow>
-                <TableCell>ID Course</TableCell>
-                <TableCell>Course Name</TableCell>
-                <TableCell style={{ textAlign: "center" }}>Image</TableCell>
-                <TableCell>Date Created</TableCell>
-                <TableCell>Creator</TableCell>
-                <TableCell>Describe</TableCell>
-                <TableCell>Category</TableCell>
-                <TableCell>Action</TableCell>
+              <TableRow style={{ fontWeight: "bold" }}>
+                <TableCell>ID COURSE</TableCell>
+                <TableCell>COURSE NAME</TableCell>
+                <TableCell style={{ textAlign: "center" }}>IMAGE</TableCell>
+                <TableCell>DATE CREATED</TableCell>
+                <TableCell>CREATOR</TableCell>
+                <TableCell>DESCRIBE</TableCell>
+                <TableCell>CATEGORY</TableCell>
+                <TableCell>ACTION</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
