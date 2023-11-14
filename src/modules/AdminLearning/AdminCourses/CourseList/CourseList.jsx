@@ -68,7 +68,10 @@ export default function CourseList() {
       queryClient.invalidateQueries({ queryKey: ["posts"] });
     },
     onError: () => {
-      handleSnackbar("Delete failed course!", "error")();
+      handleSnackbar(
+        "Students cannot delete courses that have been enrolled!!",
+        "error"
+      )();
     },
   });
 

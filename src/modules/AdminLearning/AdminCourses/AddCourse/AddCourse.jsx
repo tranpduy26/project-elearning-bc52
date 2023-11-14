@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import * as dayjs from "dayjs";
-import { addCourse, updateCourse } from "../../../../apis/CourseAPI";
+import { addCourse } from "../../../../apis/CourseAPI";
 import { useUserContext } from "../../../../contexts/UserContext/UserContext";
 
 import Box from "@mui/material/Box";
@@ -36,6 +36,7 @@ export default function AddCourse() {
     handleSubmit,
     formState: { errors },
     watch,
+    setValue,
     reset,
   } = useForm({
     defaultValues: {
@@ -46,7 +47,7 @@ export default function AddCourse() {
       luotXem: 0,
       danhGia: 0,
       hinhAnh: null,
-      maNhom: "",
+      maNhom: "GP13",
       ngayTao: "",
       maDanhMucKhoaHoc: "",
       taiKhoanNguoiTao: currentUser?.taiKhoan,
@@ -54,17 +55,39 @@ export default function AddCourse() {
     mode: "onTouched",
   });
 
-  const hinhAnh = watch("hinhAnh");
+  // const hinhAnh = watch("hinhAnh");
+  // console.log(hinhAnh);
   const [imgPreview, setingPreview] = useState("");
-  useEffect(() => {
-    const file = hinhAnh?.[0];
-    if (!file) return;
-    const fileReader = new FileReader();
-    fileReader.readAsDataURL(file);
-    fileReader.onload = (evt) => {
-      setingPreview(evt.target.result);
-    };
-  }, [hinhAnh]);
+  // useEffect(() => {
+  //   const file = hinhAnh?.[0];
+  //   console.log(file);
+  //   if (!file) return;
+  //   const fileReader = new FileReader();
+  //   fileReader.readAsDataURL(file);
+  //   fileReader.onload = (evt) => {
+  //     setingPreview(evt.target.result);
+  //   };
+  //   setValue("hinhAnh", file);
+  // }, [hinhAnh]);
+
+  const handleChangeFile = (e) => {
+    let file = e.target.files[0];
+
+    if (
+      file.type === "image/jpeg" ||
+      file.type === "image/gif" ||
+      file.type === "image/jpg" ||
+      file.type === "image/png"
+    ) {
+      let reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = (e) => {
+        setingPreview(e.target.result);
+      };
+
+      setValue("hinhAnh", file.name);
+    }
+  };
 
   const { mutate: handleAddCourse } = useMutation({
     mutationFn: (values) => {
@@ -75,13 +98,14 @@ export default function AddCourse() {
       formData.append("moTa", values.moTa);
       formData.append("luotXem", values.luotXem);
       formData.append("danhGia", values.danhGia);
-      formData.append("hinhAnh", values.hinhAnh);
+      formData.append("File", values.hinhAnh);
+
       formData.append("maNhom", "GP13");
       formData.append("ngayTao", values.ngayTao);
       formData.append("maDanhMucKhoaHoc", values.maDanhMucKhoaHoc);
       formData.append("taiKhoanNguoiTao", currentUser?.taiKhoan);
 
-      return addCourse(formData);
+      return addCourse(values);
     },
     onSuccess: () => {
       setMessage("The operation was successful!");
@@ -275,12 +299,13 @@ export default function AddCourse() {
                   type="file"
                   accept="image/png, image/jpeg, image/gif, image/jpg"
                   placeholder="Course images"
-                  {...register("hinhAnh", {
-                    required: {
-                      value: true,
-                      message: "Course images cannot be empty",
-                    },
-                  })}
+                  // {...register("hinhAnh", {
+                  //   required: {
+                  //     value: true,
+                  //     message: "Course images cannot be empty",
+                  //   },
+                  // })}
+                  onChange={handleChangeFile}
                 />
                 {errors.hinhAnh && (
                   <p className="text-danger">{errors.hinhAnh.message}</p>

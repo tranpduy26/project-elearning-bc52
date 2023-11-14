@@ -70,19 +70,14 @@ export async function getCategoryCourses() {
   }
 }
 
-export async function uploadImageCourses(idCourse, formData) {
+export async function uploadImageCourses(formData) {
   try {
     const response = await fetcher.post(
-      `/QuanLyKhoaHoc/UploadHinhAnhKhoaHoc/${idCourse}`,
-      formData,
-      {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
-      }
+      "QuanLyKhoaHoc/UploadHinhAnhKhoaHoc",
+      formData
     );
-    return response.data?.content;
+    return response.data;
   } catch (error) {
-    throw error.response.data?.content;
+    throw error.response.data;
   }
 }

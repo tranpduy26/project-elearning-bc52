@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import {
   apiDeleteUser,
-  apiGetUserDetail,
   apiUpdateUser,
   getUserList,
 } from "../../../../apis/userAPI";

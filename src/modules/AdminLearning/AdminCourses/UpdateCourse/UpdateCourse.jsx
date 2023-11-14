@@ -9,6 +9,9 @@ import { useNavigate, useLocation, useParams } from "react-router-dom";
 import Box from "@mui/material/Box";
 import { Container, Grid, TextField, Button, Switch } from "@mui/material";
 import { SnackbarProvider, useSnackbar } from "notistack";
+import MenuItem from "@mui/material/MenuItem";
+import Select from "@mui/material/Select";
+
 import { getCourseDetails, updateCourse } from "../../../../apis/CourseAPI";
 
 const updateMovieSchema = object({
@@ -140,7 +143,7 @@ export default function UpdateCourse() {
       );
       formData.append("taiKhoanNguoiTao", values.taiKhoanNguoiTao);
 
-      return updateCourse(values);
+      return updateCourse(formData);
     },
     onSettled: () => {
       queryClient.invalidateQueries(["course", courseId]);
@@ -199,15 +202,22 @@ export default function UpdateCourse() {
                 </div>
 
                 <div>
-                  <TextField
+                  <Select
                     fullWidth
                     id="outlined-multiline-static"
                     multiline
                     label="Category"
                     variant="outlined"
-                    {...register("danhMucKhoaHoc")}
+                    {...register("maDanhMucKhoaHoc")}
                     helperText={errors.danhMucKhoaHoc?.message}
-                  />
+                  >
+                    <MenuItem value="BackEnd">Lập trình Backend</MenuItem>
+                    <MenuItem value="Design">Thiết kế Web</MenuItem>
+                    <MenuItem value="DiDong">Lập trình di động</MenuItem>
+                    <MenuItem value="FrontEnd">Lập trình Front end</MenuItem>
+                    <MenuItem value="FullStack">Lập trình Full Stack</MenuItem>
+                    <MenuItem value="TuDuy">Tư duy lập trình</MenuItem>
+                  </Select>
                 </div>
 
                 <div>
